@@ -15,7 +15,8 @@ function* setDataFromRedditHandler() {
   try {
     const {
       data: { children },
-    } = yield call(getDataFromReddit, 10);
+    } = yield call(getDataFromReddit, 1, 10);
+
     yield put(setDataFromRedditReducer({ payload: children }));
   } catch (error) {
     yield put(setDataFromRedditErrorWorkflow(error));

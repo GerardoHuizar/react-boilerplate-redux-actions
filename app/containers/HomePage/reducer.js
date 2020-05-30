@@ -3,7 +3,7 @@ import { handleActions } from 'redux-actions';
 import { SET_DATA_FROM_REDDIT_REDUCER } from './constants';
 
 const initialState = {
-  dataFromReddit: {},
+  dataFromReddit: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */

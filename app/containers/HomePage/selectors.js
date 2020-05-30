@@ -1,9 +1,8 @@
-/**
- * Homepage selectors
- */
-
 import { createSelector } from 'reselect';
 
-const selectHome = state => state.home || initialState;
+const selectHome = state => state.home;
 
-export { selectHome };
+export const dataFromRedditSelector = createSelector(
+  [selectHome],
+  s => s.dataFromReddit.payload,
+);
