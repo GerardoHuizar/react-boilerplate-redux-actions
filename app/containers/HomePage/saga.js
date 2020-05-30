@@ -1,38 +1,34 @@
-/**
- * Gets the repositories of the user from Github
- */
-
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { LOAD_REPOS } from 'containers/App/constants';
-import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 
-import request from 'utils/request';
-import { makeSelectUsername } from 'containers/HomePage/selectors';
+import { SET_DATA_FROM_REDDIT } from './constants';
+import {
+  setDataFromRedditReducer,
+  setDataFromRedditStartWorkflow,
+  setDataFromRedditErrorWorkflow,
+  setDataFromRedditEndWorkflow,
+} from './actions';
+import { getDataFromReddit } from '../../services/reddit/index';
 
-/**
- * Github repos request/response handler
- */
-export function* getRepos() {
-  // Select username from store
-  const username = yield select(makeSelectUsername());
-  const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-
+function* setDataFromRedditHandler() {
+  yield put(setDataFromRedditStartWorkflow());
   try {
-    // Call our request helper (see 'utils/request')
-    const repos = yield call(request, requestURL);
-    yield put(reposLoaded(repos, username));
-  } catch (err) {
-    yield put(repoLoadingError(err));
+    const {
+      data: { children },
+    } = yield call(getDataFromReddit, 10);
+    yield put(setDataFromRedditReducer({ payload: children }));
+  } catch (error) {
+    yield put(setDataFromRedditErrorWorkflow(error));
   }
+  yield put(setDataFromRedditEndWorkflow());
 }
 
-/**
- * Root saga manages watcher lifecycle
- */
-export default function* githubData() {
-  // Watches for LOAD_REPOS actions and calls getRepos when one comes in.
-  // By using `takeLatest` only the result of the latest API call is applied.
-  // It returns task descriptor (just like fork) so we can continue execution
-  // It will be cancelled automatically on component unmount
-  yield takeLatest(LOAD_REPOS, getRepos);
+export function* mountSaga() {
+  try {
+  } catch (err) {}
+}
+
+export function* mainSaga() {
+  yield takeLatest(LOAD_REPOS, mountSaga);
+  yield takeLatest(SET_DATA_FROM_REDDIT, setDataFromRedditHandler);
 }

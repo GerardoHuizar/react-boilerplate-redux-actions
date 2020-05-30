@@ -1,14 +1,14 @@
 import produce from 'immer';
 
 import homeReducer from '../reducer';
-import { changeUsername } from '../actions';
+import { setDataFromRedditHandler } from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
 describe('homeReducer', () => {
   let state;
   beforeEach(() => {
     state = {
-      username: '',
+      dataFromReddit: [],
     };
   });
 
@@ -18,11 +18,12 @@ describe('homeReducer', () => {
   });
 
   it('should handle the changeUsername action correctly', () => {
-    const fixture = 'mxstbr';
     const expectedResult = produce(state, draft => {
-      draft.username = fixture;
+      draft.dataFromReddit = [];
     });
 
-    expect(homeReducer(state, changeUsername(fixture))).toEqual(expectedResult);
+    expect(homeReducer(state, setDataFromRedditHandler())).toEqual(
+      expectedResult,
+    );
   });
 });
