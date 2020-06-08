@@ -1,17 +1,16 @@
-import { CHANGE_USERNAME } from '../constants';
+import { SET_DATA_FROM_REDDIT } from '../constants';
 
-import { changeUsername } from '../actions';
+import { setDataFromRedditHandler } from '../actions';
 
 describe('Home Actions', () => {
   describe('changeUsername', () => {
     it('should return the correct type and the passed name', () => {
-      const fixture = 'Max';
       const expectedResult = {
-        type: CHANGE_USERNAME,
-        username: fixture,
+        type: SET_DATA_FROM_REDDIT,
+        dataFromReddit: [],
       };
 
-      expect(changeUsername(fixture)).toEqual(expectedResult);
+      expect(setDataFromRedditHandler()).toEqual(expectedResult);
     });
   });
 });
